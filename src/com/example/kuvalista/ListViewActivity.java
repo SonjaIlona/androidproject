@@ -1,8 +1,9 @@
 package com.example.kuvalista;
 /**
+ * Normaali listView t‰ss‰ on
+ * lis‰n‰ vain tiedostosta luku. 
  * 
- * Tässä on vain normaali listView ja lisänä tiedoston luku.
- *
+ * 
  */
 //http://jmsliu.com/1431/download-images-by-asynctask-in-listview-android-example.html
 //http://www.youtube.com/watch?v=WRANgDgM2Zg
@@ -49,14 +50,10 @@ public class ListViewActivity extends Activity {
 		setContentView(R.layout.activity_listviewexampleactivity);
 
 		
-		/** 
-         * 
-         * cache hakemisto (Androidin oletus)
-         * 
-         */
+		/** Haetaan cache hakemisto (Androidin oletus) */
 		File chDir = getBaseContext().getCacheDir();
 		
-		// Lisätään listaan kaikki filet hakemistosta hakee myös kansiot ja vähän siihen lisättyä työtä
+		// Lis‰t‰‰n listaan kaikki filet hakemistosta hakee myˆs kansiot, joten teht‰v‰ v‰h‰m lis‰tyˆt‰
 		tempList = chDir.listFiles();
 		
 		for(int i=0; i<tempList.length;i++){
@@ -66,7 +63,7 @@ public class ListViewActivity extends Activity {
 		
 		texttaulukko = new String[fileList.size()];
 				
-		//Jos GPS-tiedostoja löytyy	
+		//Jos gps tiedostoja lˆytyy	
 		if(fileList.size() > 0){
 			int i=0;
 			for(File item: fileList){
@@ -74,7 +71,8 @@ public class ListViewActivity extends Activity {
 				FileReader fReader = new FileReader(item);	
 				BufferedReader bReader = new BufferedReader(fReader);
 	
-				/** Luetaan rivi taulukon indeksiin */				
+				/** Luetaan rivi taulukon indeksiin */
+				
 					texttaulukko[i] =  bReader.readLine();
 					Log.d("STRLINE", texttaulukko[i]);
 				
@@ -89,15 +87,15 @@ public class ListViewActivity extends Activity {
 		
 		}
 
-		// Tehdään listanäkymä layoutin pohjalta
+		// Tehd‰‰n lista nakyma layoutin pohjalta
 		final ListView listview = (ListView) findViewById(R.id.listview);
 		
-		// Mennään tähän, jos tempList ei tyhjä
+		// Menn‰‰n t‰h‰n, jos tempList ei tyhj‰
 		if (fileList.size()>0) {
 			BitmapFactory.Options options = new BitmapFactory.Options();
 
-			//Kuva pienenetään riittävästi
-			options.inSampleSize = 20;			
+			//Kuva pienenet‰‰n riitt‰v‰sti
+			options.inSampleSize = 8;			
 			// Luodaan olio viittammaan hakemistoon
 			 mediaStorageDir = new File(
 	                Environment
@@ -107,7 +105,7 @@ public class ListViewActivity extends Activity {
 			//haetaan kuvat taulukkoon
 			imageList = mediaStorageDir.listFiles();
 			kuvat = new Bitmap[texttaulukko.length];
-				//Käydään kuvat yksitellen läpi ja muutetaan bitmapiksi
+				//K‰yd‰‰n yksitellen l‰pi ja muutetaan bitmapiksi
 			for (int i = 0; i < imageList.length; i++) {
 				Log.e("Image: " + i + ": path", imageList[i].getAbsolutePath());
 				Bitmap b = BitmapFactory.decodeFile(
@@ -119,7 +117,7 @@ public class ListViewActivity extends Activity {
 			listview.setAdapter(adapter);
 
 		}
-		//Muutoin käytetään korvaavaa taulukkoa
+		//Muutoin k‰yet‰‰n korvaavaa taulukkoa
 		else {
 			String[] korvaava = { "ei ole dataa" };
 			final ListAdapter adapter = new ListAdapter(this, korvaava);
@@ -128,8 +126,9 @@ public class ListViewActivity extends Activity {
 
 		
 
-		// Tämä kohta kuuntelee painallusta halutussa listan kohdassa ja toimii avaamalla uuden aktiviteetin
-			listview.setOnItemClickListener(new OnItemClickListener() {
+		// T‰m‰ kohta kuuntelee painallusta halutussa listan kohdassa ja toimii
+		// avaamalla uuden aktiviteetin
+		listview.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -155,7 +154,7 @@ public class ListViewActivity extends Activity {
 			}
 		});
 
-		// Paluu-painike MainActivityyn
+		// Paluu- nappula MainActivityyn
 		Button btnReturn1 = (Button) findViewById(R.id.takaisin);
 		btnReturn1.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -172,7 +171,7 @@ public class ListViewActivity extends Activity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 
-		// Näytön kierron tunnistus ei toimi
+		// N‰ytˆn kierron tunnistus ei toimi
 		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
 		} else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {

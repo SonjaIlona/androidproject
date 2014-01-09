@@ -26,12 +26,13 @@ public class MainActivity extends Activity {
 			Button exit = (Button) findViewById(R.id.Ulos);
 			
 			
-			//päästään ohjelmasta pois
+			//p‰‰st‰‰n ohjelmasta pois
 		    exit.setOnClickListener(new View.OnClickListener()
 		    {
 		        @Override
 		        public void onClick(View v)
 		        {
+		            // TODO Auto-generated method stub
 		            finish();
 		            System.exit(0);
 		        }
@@ -53,8 +54,10 @@ public class MainActivity extends Activity {
 		});	
 
 
-		// Käynnistetään lista Activiteetti ja laitetaan sinne tarvittavat kuvat Lat ja Lon putextran kautta
-			listanappula.setOnClickListener(new View.OnClickListener() {
+		// K‰ynnistet‰‰n lista Activiteetti
+		// ja laitetaan sinne tarvittavat kuvat la Lat Lon putextran kautta
+
+		listanappula.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = new Intent(getApplicationContext(),

@@ -13,7 +13,7 @@
         android:gravity="center"
         android:orientation="vertical" >
  
-        <!-- Kuvan otto painike -->
+        <!-- Kuvan otto nappula -->
         <Button
             android:id="@+id/btnCapturePicture"
             android:layout_width="wrap_content"
@@ -21,7 +21,7 @@
             android:text="Ota kuva"
             android:layout_marginBottom="10dp"/>
         
-          <!-- Väimuistin tyhjäys -->
+          <!-- Väimuistin tyhäys -->
         <Button
             android:id="@+id/btntyhjays"
             android:layout_width="wrap_content"

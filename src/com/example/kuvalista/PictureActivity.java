@@ -2,8 +2,7 @@ package com.example.kuvalista;
 
 /**
  * 
- * Luokka, joka hallitsee yksittäistä listan kohtaa.
- * 
+ * Luokka, joka hallitsee yksitt‰ist‰ listan kohtaa
  */
 
 
@@ -27,12 +26,12 @@ public class PictureActivity extends Activity {
 	
 	@Override
 	  protected void onCreate(Bundle savedInstanceState) {
-		  //ensimmäinen vaihe, kun luodaan list layout
+		  //ekavaihe, kun luodaan list layout
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_picture);
-	    //activity_listviewexampleactivity= tämän luokan layoyt tiedoston nimi
+	    //activity_listviewexampleactivity= t‰m‰n luokan layoyt tiedoston nimi
 	    
-	    //Haetaan listaluokassa laitettu ekstra, mikä on klikattu kohta.
+	    //Haetaan listaluokassa laitettu ekstra, mik‰ on klikattu kohta.
 	     
 	    String sana= getIntent().getStringExtra("nimi");
 	    Log.d("sana",sana);
@@ -67,11 +66,9 @@ public class PictureActivity extends Activity {
 	
 	}
 	/**
-	 * 
-     * Bitmapin suurennukseen
+	 * Bitmapin suurennukseen
 	 * @param kuva
 	 * @return
-     *
 	 */
 
 	private Bitmap suurennetaan(Bitmap kuva) {		 
@@ -95,7 +92,7 @@ public class PictureActivity extends Activity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 
-		// Näytön kierron tunnistus ei toimi
+		// N‰ytˆn kierron tunnistus ei toimi
 		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
 		} else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {

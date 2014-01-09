@@ -1,6 +1,6 @@
 package com.example.kuvalista;
 
-//Tätä luokkaa käytetty suoraan, pienin arvojen muutoksiin.
+//T‰t‰ luokkaa k‰ytetty suoraan, pienin arvojen muutoksin 
 //http://www.androidhive.info/2012/07/android-gps-location-manager-tutorial/
 
 import android.app.AlertDialog;
@@ -33,13 +33,13 @@ public class GPSTracker extends Service implements LocationListener {
     double latitude; // latitude
     double longitude; // longitude
  
-    // Minimi etäisyys uuden paikkatiedon päivittämiseksi
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 metriä
+    // Minimi et‰isyys uuden paikkatiedon p‰ivitt‰miseksi
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 metri‰
  
-    // Minimi aika millisekunteina uuden paikkatiedon päivittämiseksi
+    // The minimi aika millisekunteina uuden paikkatiedon p‰ivitt‰miseksi
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minuutti
  
-    // Paikka-managerin esittely
+    // Paikka manakerin esittely
     protected LocationManager locationManager;
  
     public GPSTracker(Context context) {
@@ -52,19 +52,19 @@ public class GPSTracker extends Service implements LocationListener {
             locationManager = (LocationManager) mContext
                     .getSystemService(LOCATION_SERVICE);
  
-            // haetaan GPS:n tila
+            // haetaan GPS tila
             isGPSEnabled = locationManager
                     .isProviderEnabled(LocationManager.GPS_PROVIDER);
  
-            // haetaan network:n tila
+            // haetaan network tila
             isNetworkEnabled = locationManager
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
  
             if (!isGPSEnabled && !isNetworkEnabled) {
-                // ei network:n tarjoajaa saatavilla
+                // ei network tarjoajaa saatavilla
             } else {
                 this.canGetLocation = true;
-                // Ensimmäinen paikkatiedon haku tarjoajalta
+                // Eka paikkatiedon haku tarjoajalta
                 if (isNetworkEnabled) {
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
@@ -80,7 +80,7 @@ public class GPSTracker extends Service implements LocationListener {
                         }
                     }
                 }
-                // jos GPS on saatavilla hae lat/long käyttämällä GPS-palveluja
+                // jos GPS saatavilla hae lat/long k‰ytt‰m‰ll‰ GPS palveluja
                 if (isGPSEnabled) {
                     if (location == null) {
                         locationManager.requestLocationUpdates(
@@ -108,10 +108,9 @@ public class GPSTracker extends Service implements LocationListener {
     }
      
     /**
-     *   
-     * Pysäytetään GPS kuuntelijan käyttö.
+     * Pys‰ytet‰‰n GPS kuuntelijan k‰yttˆ
      * 
-     */
+     * */
     public void stopUsingGPS(){
         if(locationManager != null){
             locationManager.removeUpdates(GPSTracker.this);
@@ -119,10 +118,8 @@ public class GPSTracker extends Service implements LocationListener {
     }
      
     /**
-      *  
-      * Haetaan latitude
-      * 
-      */
+     * Haetaan latitude
+     * */
     public double getLatitude(){
         if(location != null){
             latitude = location.getLatitude();
@@ -133,10 +130,8 @@ public class GPSTracker extends Service implements LocationListener {
     }
      
     /**
-     *  
      * Haetaan longitude
-     * 
-     */
+     * */
     public double getLongitude(){
         if(location != null){
             longitude = location.getLongitude();
@@ -146,21 +141,17 @@ public class GPSTracker extends Service implements LocationListener {
     }
      
     /**
-     *     
-     * Tarkistetaan onko GPS/wifi saatavilla
+     * Tarkistetaan GPS/wifi saatavilla
      * @return boolean
-     * 
-     */
+     * */
     public boolean canGetLocation() {
         return this.canGetLocation;
     }
      
     /**
-     *  
-     * Asetetaan hälytys-dialogi
-     * painettaessa Settings saadaan asetusvalinnat
-     * 
-     */
+     * Asetusten h‰lytys dialogi
+     * painettaessa Settings saadaan asetus valinnat
+     *      * */
     public void showSettingsAlert(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
       
@@ -170,7 +161,7 @@ public class GPSTracker extends Service implements LocationListener {
         // Asetetaan Dialog Message
         alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
   
-        // Painettaessa asetukset-painiketta
+        // Painettaessa asetukset-nappulaa
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -178,14 +169,14 @@ public class GPSTracker extends Service implements LocationListener {
             }
         });
   
-        // Painettaessa peruutus-painiketta
+        // Painettaessa peruutus-nappulaa
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             dialog.cancel();
             }
         });
   
-        // Näytetään hälytysviesti
+        // N‰ytet‰‰n h‰lytysviesti
         alertDialog.show();
     }
  

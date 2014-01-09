@@ -1,14 +1,16 @@
 package com.example.kuvalista;
 
 
-/** Tässä luokassa otetaan kuva, siis kutsutaan varsinaista kameraa ja tallennetaan.
- *
- * kuva sd-kortille. Myöskin luodaan jokaisen kuvan otto tilanteessa uusi GPS-tiedosto, johon 
- * tallenetaan lat ja lon. Nämä voidaan poistaa, kuten myös kuvat Tyhjää välimuisti-painikkeella.
- * Lisäksi on erilliseen tiedostoon aina viimeinen lat ja lon tieto, jota voidaan verrata
- * palvelulta saatuun tietoon ja peruuttaa kuvan otto, jos lat ja lon eivät ole päivittyneet.
+/**T‰ss‰ luokassa otetaan kuva, sis kutsutaan varsinaista kameraa. Tallenetaan
+
+ * kuva sd-kortille. Myˆskin luodaan joka kuvan otto tilanteessa uusi GPS-tiedosot, johon 
+ * tallenetaan lat ja lon. N‰m‰ voidaan poistaa, kuten myˆs kuvat sitten Tyhj‰‰ v‰limuisti-painikkeella.
+ * Lis‰ksi on erilliseen tiedostoon aina viimeinen lat ja lon tieto, jota voidaan verrata
+ * palvelulta saatuun tietoon ja peruuttaa kuvan otto, jos lat ja lon eiv‰t ole p‰ivittyneet.
  * 
- * Tiedosotn käsittely olisi hyvä olla omassa luokassaan, koska tämä luokka alkaa näyttämään jo liian isolta.
+ * Tiedosotn k‰sittely olisi hyv‰ olla omassa luokassaan, koska t‰m‰ luokka alkaa n‰ytt‰m‰‰n jo liian isolta.
+ * 
+ * 
  * 
  */
 
@@ -58,6 +60,9 @@ public class CameraActivity extends Activity {
 	private File mediaStorageDir2;
 	private File ll;
 	private ImageView imgPreview;
+	private File temp;
+	private String timeStamp;
+	private boolean kuvaotettu;
 	
 
 	@Override
@@ -78,7 +83,7 @@ public class CameraActivity extends Activity {
 		});
 
 		/**
-		 * Painikkeen toiminto kuvan ottamiseen.
+		 * Nappula toiminto kuvan ottamiseen.
 		 */
 		btnCapturePicture.setOnClickListener(new View.OnClickListener() {
 
@@ -90,13 +95,13 @@ public class CameraActivity extends Activity {
 		});
 
 		 /**
-		  *		  
-		  * Välimuistin tyhjäys kuvineen ja paikkatietoineen. 
+		  * V‰limuistin tyhj‰ys kuvineen ja paikkatietoineen sek‰ aikaleimoineen
 		  * 
 		  */		
 		btntyhjays.setOnClickListener(new View.OnClickListener() {
 			
 			List<Boolean> bool = new ArrayList<Boolean>();
+			
 
 			@Override
 			public void onClick(View arg0) {
@@ -110,14 +115,15 @@ public class CameraActivity extends Activity {
 			                Environment
 			                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
 			                        LATITJALONIT_DIRECTORY_NAME);
+				
 				 
 				File[] temp;
 				List<File> fileList = new ArrayList<File>();
 				List<File> listakuvat = new ArrayList<File>();
 				List<File> listagps = new ArrayList<File>();
 				
-				//Hakee myös kansiot, joten kikkaillaan ne pois
-
+				
+				//Hakee myˆs kansiot, joten kikkaillaan ne pois
 				temp = chDir.listFiles();
 				
 				for(int i=0; i<temp.length;i++)
@@ -125,7 +131,6 @@ public class CameraActivity extends Activity {
 						fileList.add(temp[i]);
 				
 				//poistetaan filet sijoitetaan tulos (true tai false)
-
 				if (fileList.size()>0){
 					for (File file: fileList) {						
 						bool.add(file.delete());
@@ -143,13 +148,10 @@ public class CameraActivity extends Activity {
 						bool.add(file.delete());
 					}
 					
-				}
+				}				
 				
-				
-				
-				
-				//Listataan tiedostoon, jos viite polkuun on olemassa ja poistetaan filet sijoitetaan tulos (true tai false)
-				//Listataan tiedostoon, jos viite polkuun on olemassa ja poistetaan filet sijoitetaan tulos (true tai false)
+				//Listataan tiedoston, jos viite polkuun on olemassa ja postetaan filet sijoitetaan tulos (true tai false)
+				//Listataan tiedoston, jos viite polkuun on olemassa ja postetaan filet sijoitetaan tulos (true tai false)
 				//mediaStorageDir = new File(chDir.getPath()+"//Kamera");
 				if(mediaStorageDir.exists())
 				temp = mediaStorageDir.listFiles();
@@ -187,10 +189,8 @@ public class CameraActivity extends Activity {
 	}
 
 	/**
-         *	
-         * Tarkistetaan kameran saatavuus.
-	 * 
-        */
+	 * Tarkistetaan kameran saatavuus
+	 * */
 	private boolean isDeviceSupportCamera() {
 		if (getApplicationContext().getPackageManager().hasSystemFeature(
 				PackageManager.FEATURE_CAMERA)) {
@@ -203,10 +203,11 @@ public class CameraActivity extends Activity {
 	}
 
 	/**
-	 * Käynnistetään kuvan otto.  
+	 * 	  K‰ynnistet‰‰n kuvan otto  
 	 */
 	private void captureImage() {
 		gps = new GPSTracker(CameraActivity.this);
+		kuvaotettu =false;
 		// Tarkistetaan onko GPS saatavilla
 		if (gps.canGetLocation()) {
 			//Haetaan palvelulta latit ja lonit
@@ -221,10 +222,10 @@ public class CameraActivity extends Activity {
 			bufferi.append("-");
 			bufferi.append(Double.toString(latitude));
 			latitjalonit=(bufferi.toString());
-			bufferi = null;
 			
-			// Tämä tiedosto tehdään sitä varten, jotta voidaan verrata GPS-tietoa ja ei oteta uutta kuvaa ennen kuin uusi GPS-tieto
-			// päivittynyt.
+			
+			// T‰m‰ tiedosto tehd‰‰n sit‰ varten, jotta voidaan verrata ja ei oteta uutta kuvaa ennen kuin uusi GPS-tieto
+			// p‰ivittynyt
 			
 			
 			 // Muistikortille
@@ -233,9 +234,9 @@ public class CameraActivity extends Activity {
 	                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
 	                        LATITJALONIT_DIRECTORY_NAME);
 
-			// Luodaan latitjalonit-kansio(GPS kansio), jos ei vielä olemassa
+			// Luodaan latitjalonit-kansio(GPS kansio), jos ei olemassa
 			if (!mediaStorageDir2.exists()) {			
-				if (mediaStorageDir2.mkdir()) {
+				if (mediaStorageDir2.mkdirs()) {
 					Log.d(LATITJALONIT_DIRECTORY_NAME, "LUONTI EI ONNISUNUT "
 							+ LATITJALONIT_DIRECTORY_NAME + " directory");
 				}				
@@ -243,7 +244,7 @@ public class CameraActivity extends Activity {
 			}
 			
 			
-			//Ei ole kuin 1 tiedosto, niin voidaan käyttää 0 indeksiä
+			//Ei ole kuin 1 tiedosot, niin voidaan k‰ytt‰‰ 0 indeksi‰
 			if(mediaStorageDir2.listFiles().length <1) {			
 				
 				ll = new File(mediaStorageDir2.getPath() + File.separator
@@ -255,15 +256,15 @@ public class CameraActivity extends Activity {
 			//Alustetaan lukijat ja luetaan viimeisin GPS-tieto vertailua varten	
 			//*********************************************************************************************************//
 			try {
-				//Tarkistus ei ole välttämätön, mutta on tehty tähän
+				//Tarkistus siin‰ tapauksessa, ett‰ tiedosot onkin jo olemassa
 				if(ll==null)
-				 ll= new File(mediaStorageDir2.getPath() + File.separator+"ll.txt");
+					ll= mediaStorageDir2.listFiles()[0];
+				// ll= new File(mediaStorageDir2.getPath().l + File.separator+"ll.txt");
 				
 				FileReader fReader = new FileReader(ll);
 				BufferedReader bReader = new BufferedReader(fReader);
 				StringBuilder stringBuilder =  new StringBuilder();
 				String receiveString;
-
 				//** Luetaan rivi *//*
 				while ( (receiveString = bReader.readLine()) != null ) {	            		
 					stringBuilder.append(receiveString);
@@ -277,48 +278,103 @@ public class CameraActivity extends Activity {
 				e.printStackTrace();
 			}
 			
+			
+			//N‰m‰ suoritetaan, jos on jo vanhat GPS-tiedot
+			double erotus=10;
 			if(strLine != null){
 			   StringBuilder builder = new StringBuilder();
-			   // Jostain syystä joka toinen tyhjää ja siksi on tehty tämä	
+			   //Jostain syyst‰ joka toinen tyhj‰‰, joten k‰ytet‰‰n t‰t‰ konstia	
 			   for(int i=1;i<strLine.length();i++){
-				if(i % 2!=0)
-					builder.append(strLine.charAt(i));				
+				   if(i % 2!=0)
+					   builder.append(strLine.charAt(i));				
 			   }			
-			   strLine = builder.toString();	
+			   strLine = builder.toString();
+			   Log.d("STR",strLine);
+			   // #############Otetaan myˆs aikaleima vertailuun vanhasta tiedostosta ja verrataan sit‰ nykyhetkeen.##############
+			   String katkaisija ="_";
+			   String leima =  (new SimpleDateFormat("dd_HHmm",
+						Locale.getDefault()).format(new Date()));
+			   String[] paiva1 = leima.split(katkaisija);	
 			   
-			}
+			   File[]lista;
+			   lista = chDir.listFiles();
+			   List<File> fileList = new ArrayList<File>();
+			   for(int i=0; i<lista.length;i++)
+					if(! lista[i].isDirectory())
+						fileList.add(lista[i]);			   
+			   String[] paiva = null;
+			   String vanhaleima = null;
+			   if(fileList.size()>0){
+				   temp= fileList.get(fileList.size()-1);
+				    vanhaleima = temp.toString();	
+				    Log.d("LEIMA",vanhaleima);
+				    Log.d("LEIMA",leima);
+				   
+				   paiva= vanhaleima.split(katkaisija);
+				   vanhaleima = paiva[0];
+				   vanhaleima = vanhaleima.substring(vanhaleima.length()-2,vanhaleima.length());
+				   paiva[0]=vanhaleima;
+				   		    
+				   Log.d("KATKAISTU",paiva[0]);
+				   //Vertailu vain saman p‰iv‰n ajoille
+				   Log.d(" PAIVA1",paiva[0]);
+				   Log.d(" PAIVA2",paiva1[0]);
+				   if(paiva1[0].equals(paiva[0])){
+					   String vertailuun1 = leima.substring(leima.indexOf(3), leima.indexOf(6));
+					   String vertailuun = vanhaleima.substring(vanhaleima.length()-8, vanhaleima.length()-4);
+					   double leima1 = Double.parseDouble(vertailuun);
+					   double leima2 =  Double.parseDouble(vertailuun1);
+					   erotus = leima2-leima1;
+				   }
+				   else
+					   erotus =20;
+				   //############
+			   }
+		}
+			
+				//Vain, jos on gps tiedot jo olemassa
+				String str = String.valueOf((double) erotus);
+				Log.d(" STRING",str);
+				if(strLine!=null){
+					if (strLine.equals(latitjalonit)&&erotus<10) {
+						Toast.makeText(getBaseContext(),
+								"Ei oteta kuvaa, koska GPS-tiedot samat ja aikaa kulunut alle 10 minuuttia",
+								Toast.LENGTH_LONG).show();
+					paluu();
+					}
+				}
+			   
+				
 		 //*********************************************************************************************//
 			
-			//Estetään samoilla GPS-tiedoilla ottamasta toista kuvaa
-			if(strLine != null){
-				if (strLine.equals(latitjalonit)) {
-					Toast.makeText(getBaseContext(),
-						"Ei oteta kuvaa, koska GPS-tiedot samat",
-						Toast.LENGTH_LONG).show();
-				}
-			}
+			
 			//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
-			 //Jos ei ole samat yritetään kirjoittaa viimeisiä GPS-tietoja vertailuun seuraava kuvaa otettaessa 			
-			else{					
-				try {					
-					
-					DataOutputStream out = new DataOutputStream(
+			 //Jos ei samat yritet‰‰n kirjoittaa viimeisi‰GPS-tietoja vertailuun seuraava kuvaa otettaessa
+				
+				//Yritet‰‰n ottaa kuvaa ensin
+				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+				// K‰ynnistet‰‰n kuvanotto ja odotetaan vastausta
+				startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);		
+				if (kuvaotettu) {								
+					try {					
+						DataOutputStream out = new DataOutputStream(
 							new FileOutputStream(ll.toString()));
-					out.writeChars(latitjalonit);
-					out.close();
+						out.writeChars(latitjalonit);
+						out.close();
 					} catch (IOException e) {
 						Log.i("Data output", "I/O Error");	
 					}			
 				
 				// Luodaan uusi GPS-text-file
-				 String timeStamp = new SimpleDateFormat("dd.MM.yy",
-						Locale.getDefault()).format(new Date());
-				 File temp;
-				
+				  timeStamp = new SimpleDateFormat("dd_HHmm",
+						Locale.getDefault()).format(new Date());				
 					temp = new File(chDir.getPath() + File.separator
 							 + timeStamp + ".txt");
-					temp.deleteOnExit();				 
-				// Tässä kameraa varten try-lohko
+					temp.deleteOnExit();
+					Log.d("AIKALEIMA",temp.toString()); 
+				// T‰ss‰ kameraa varten try-lohko
 				try {	
 					DataOutputStream out = new DataOutputStream(
 							new FileOutputStream(temp.toString()));
@@ -332,15 +388,11 @@ public class CameraActivity extends Activity {
 						Toast.LENGTH_LONG).show();
 				
 	
-				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-				// Käynnistetään kuvanotto ja odotetaan vastausta
-				startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);			
+				}	
 				
 			}
 	
-		}
+		
 		//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
 				
 		if (! gps.canGetLocation()) {
@@ -352,13 +404,12 @@ public class CameraActivity extends Activity {
 							+ latitjalonit, Toast.LENGTH_LONG).show();
 			gps.showSettingsAlert();
 		}
-	//	paluu();
+		//paluu();
 	}
 
-	/**	
-         * 
-	 * Tässä laitetaan talteen urli, koska se nollautuu aina, kun palataan
-	 * kamera-ohelmasta. Tätä ei tarvita nyt, kun esikatselu ei ole käytössä
+	/**	 * 
+	 * app T‰ss‰ laitetaan talteen urli, koska se nollautuu aina, kun palataan
+	 * kameraohelmasta. T‰t‰ ei tarvita nyt, kun esikatselu ei k‰ytˆss‰
 	 */
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -370,13 +421,13 @@ public class CameraActivity extends Activity {
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		// Tässä se saadaan takaisin
+		// T‰ss‰ se saadaan takaisin
 		fileUri = savedInstanceState.getParcelable("file_uri");
 		
 	}
 
 	/**
-	 * Kutsutaan kameraan sulkeutumisen jälkeen
+	 * Kutsutaan kameran sulkeutumisen j‰lkeen
 	 * */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -384,10 +435,11 @@ public class CameraActivity extends Activity {
 		if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
 				// kuvanotto onnistui
-				// näytetään esikatselussa
+				// n‰ytet‰‰n esilatselussa
+				kuvaotettu=true;
 				
 			} else if (resultCode == RESULT_CANCELED) {
-				// käyttäjä perunut kuvan oton
+				// k‰ytt‰j‰ perunut
 				Toast.makeText(getApplicationContext(), "Kuvanotto peruutettu",
 						Toast.LENGTH_SHORT).show();
 			} else {
@@ -401,10 +453,8 @@ public class CameraActivity extends Activity {
 	}
 
 	/**
-          *	
-          * Haetaan kuva esikatseluun ja säädetään koko pienemmäksi.
-	  *
-          */
+	 * Haetaan kuva esikatseluun ja s‰‰det‰‰n koko pienemm‰ksi
+	 */
 	
 	private void previewCapturedImage() {
         try {
@@ -427,14 +477,12 @@ public class CameraActivity extends Activity {
     }
 
 	/**
-	 * ------------ Apumetodeja kuvan tiedosotn käsittelyyn ----------------------
+	 * ------------ Apumetodeja kuvan tiedosotn k‰sittelyyn ----------------------
 	 * */
 
 	/**
-          *	 
-          * Luodaan uri kuvan tallentamista varten.
-          *
-          */
+	 * Luodaan uri kuvan tallentamista varten
+	 */
 	public Uri getOutputMediaFileUri(int type) {
 		return Uri.fromFile(getOutputMediaFile(type));
 	}
@@ -461,7 +509,7 @@ public class CameraActivity extends Activity {
 
 		
 		// Luodaan kuvatiedoston nimi varustettuna aikaleimalla
-		String timeStamp = new SimpleDateFormat("dd.MM.yy",
+		String timeStamp = new SimpleDateFormat("dd.MM.yy_HH:mm",
 				Locale.getDefault()).format(new Date());
 		File mediaFile;
 
@@ -476,7 +524,7 @@ public class CameraActivity extends Activity {
 		return mediaFile;
 	}
 	/**
-	 * Laitettu metodin sisään.
+	 * Laitettu metodin sis‰‰n
 	 */
 	private void paluu() {
 

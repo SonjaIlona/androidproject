@@ -1,7 +1,7 @@
 package com.example.kuvalista;
 /**
- *
- * Perusadapteri, jota lista käyttää.
+ * Perusadapteri, jota lista k‰ytt‰‰ 
+ * 
  * 
  */
 
@@ -37,10 +37,8 @@ public class ListAdapter extends ArrayAdapter {
 		
 	
 	/*
-	 *
-     * Alla näytetään rivi kerrallaan listaan.
-     *
-     */
+	 * Alla n‰ytet‰‰n rivi kerrallaan listaan
+	 */
 
 	@SuppressWarnings("unchecked")
 	public ListAdapter(Context context,
@@ -55,7 +53,7 @@ public class ListAdapter extends ArrayAdapter {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		// Asetetaan näkymään layoutin mukainen rivi, joka sisältää tekstin ja kuvan.
+		// Asetetaan n‰kym‰‰n layoutin mukainen rivi sis‰lt‰en tekstin ja kuvan.
 		View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
 		TextView textView = (TextView) rowView.findViewById(R.id.txt);
 
@@ -64,7 +62,7 @@ public class ListAdapter extends ArrayAdapter {
 			textView.setText("Ei GPS-tietoja");
 		else {
 			textView.setText(list[position]);
-			// Ladataan oletuskuva, jos ei ole kameran kuvia
+			// Ladataan oletuskuva, jos ei kameran kuvia
 			if (kuvat[position]==null)
 				imageView.setImageResource(R.drawable.ic_launcher);
 			else
